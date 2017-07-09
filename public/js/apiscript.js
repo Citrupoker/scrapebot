@@ -257,13 +257,13 @@ $(document).ready(function () {
     if (ids.length > 0) {
       if (permision) {
         $.post('/reset', {'ids': ids}, function (data, status) {
-          alert(status)
+          //alert(status)
           if (data) {
             alert(data)
-            
           }
-          //linkdata('/getLinkData')
+          
         });
+        linkdata('/getLinkData')
       }
     } else {
       alert('Select a link')
