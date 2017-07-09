@@ -1,0 +1,31 @@
+{
+    "monitor": {
+        "interval": 5,
+        "lps": 1,
+        "timeout": 20
+    },
+    "twitter": {
+        "consumer_key": "xquKyF6HjlNr631aB4qE9dTsu",
+        "consumer_secret": "KkB5dMBmO3NZJ9lRNOobMOwxZwvjrgschCbDDMHCDxapIGvEtZ",
+        "access_token": "822986449503059973-bFwq9iLiYTPXhuOUCwzjACaR8vUlOhK",
+        "access_token_secret": "rFQkzVqk7vFZzVi8y3i7XQPHD1uWhToYyQBlUFBcLGBCE"
+    },
+    "fetch": {
+        "useProxy": true,
+        "proxyList": [
+            {
+                "proxyUrl": "37.48.118.90:13042",
+                "proxyUser": "",
+                "proxyPass": ""
+            }
+        ],
+        "options": {
+            "show": false,
+            "maxAuthRetries": 10,
+            "waitTimeout": 100000,
+            "switches": {
+                "ignore-certificate-errors": true
+            }
+        }
+    }
+}
