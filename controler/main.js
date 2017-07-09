@@ -112,7 +112,7 @@ module.exports.reset = function (req, res) {
         if (data.length > 0) {
           for (var x in data) {
             fetchMain(data[x], function (err, dataset) {
-              if (err) return res.send('encountred an error please try again error')
+              if (err) console.log('encountred an error please try again error')
               console.log(dataset)
               redis.hset(['links', dataset._id.toString(), JSON.stringify(dataset)])
               redis.hdel(['posted', dataset._id.toString()], function (err) {
