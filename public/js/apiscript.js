@@ -263,7 +263,9 @@ $(document).ready(function () {
             
           }
           linkdata('/getLinkData')
-        })
+        }).catch(e) {
+          console.log(e);
+}
       }
     } else {
       alert('Select a link')
