@@ -262,7 +262,7 @@ $(document).ready(function () {
             alert(data)
             
           }
-          linkdata('/getLinkData')
+          //linkdata('/getLinkData')
         });
       }
     } else {
