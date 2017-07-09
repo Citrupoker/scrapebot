@@ -290,6 +290,7 @@ console.log('after userAgent declared');
 
         return result
       }, params.keywords.toString().trim(), params.negKeywords.toString().trim(), '//text()[matches(., "' + params.keywords.toString().trim() + '", "i")]', '//text()[matches(., "' + params.negKeywords.toString().trim() + '", "i")]')
+      .end()
     .then(function (result) {
       console.log('inside then');
       var dataset = {}
