@@ -231,8 +231,8 @@ function fetchMain (params, cb) {
 
       if (fetchSettings.useProxy) {
         console.log('inside first if');
-        fetchSettings.options.switches['proxy-server'] = proxy.proxyUrl
-        console.log(proxy.proxyUrl);
+        //fetchSettings.options.switches['proxy-server'] = proxy.proxyUrl
+      
       }
     
       var nightmare = new Nightmare(fetchSettings.options)
