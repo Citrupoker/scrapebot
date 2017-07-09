@@ -36,6 +36,7 @@
     "express": "~3.4.4",
     "express-session": "~1.0.0",
     "get-urls": "*",
+    "hash-object": "^0.1.7",
     "hbs": "*",
     "is-absolute-url": "*",
     "jquery": "*",

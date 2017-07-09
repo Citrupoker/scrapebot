@@ -65,6 +65,6 @@ xvfb.start(function (err, xvfbProcess) {
   })
 })
 
-server.listen(80, '0.0.0.0', function () {
+server.listen(8080, '0.0.0.0', function () {
   console.log('Listening on 80')
 })
