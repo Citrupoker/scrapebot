@@ -108,7 +108,7 @@ module.exports.reset = function (req, res) {
   try {
     process.nextTick(function () {
       Link.find({ _id: { $in: dataarr } }, function (err, data) {
-        if (err) return res.send('encountred an error please try again error')
+        if (err) console.log('encountred an error please try again error')
         if (data.length > 0) {
           for (var x in data) {
             fetchMain(data[x], function (err, dataset) {
