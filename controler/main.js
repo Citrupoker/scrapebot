@@ -303,7 +303,7 @@ console.log('after userAgent declared');
       dataset.posHash = hashObject(result.posKeywords)
       dataset.hash = hashObject(result, 'md5')
       cb(null, dataset)
-    }).end()
+    })
     .catch(function (error) {
       console.log('inside catch');
       console.log(error)
