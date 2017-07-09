@@ -256,14 +256,15 @@ $(document).ready(function () {
     })
     if (ids.length > 0) {
       if (permision) {
-        $.post('/reset', {'ids': ids}, function (data, status) {
-          alert(status, data)
-          if (data) {
+        $.post('/reset', {'ids': ids})
+          .done(function(data) {
             alert(data)
-          }
-          
+            linkdata('/getLinkData')
+          })
+    .fail(function(jqXHR){
+        alert(jqXHR.status)
         });
-        linkdata('/getLinkData')
+        
       }
     } else {
       alert('Select a link')
