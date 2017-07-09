@@ -228,20 +228,21 @@ function fetchMain (params, cb) {
       var pLen = fetchSettings.proxyList.length || 0
       var proxy = fetchSettings.proxyList[Math.floor(Math.random() * pLen)]
       fetchSettings.options.electronPath = require('electron')
-console.log('before first if');
+
       if (fetchSettings.useProxy) {
+        console.log('inside first if');
         fetchSettings.options.switches['proxy-server'] = proxy.proxyUrl
       }
-console.log('before nightmare declared');
+    
       var nightmare = new Nightmare(fetchSettings.options)
 
       if (proxy.proxyUser && proxy.proxyPass && fetchSettings.useProxy) {
         console.log('inside proxy if');
         nightmare.authentication(proxy.proxyUser, proxy.proxyPass)
       }
-console.log('before useragent declared');
+
       nightmare.useragent(useragents[Math.floor((Math.random() * useragents.length))]).goto(params.url).wait()
-console.log('after userAgent declared');
+
       nightmare.inject('js', 'node_modules/jquery/dist/jquery.js')
       .inject('js', 'jquery.xpath.min.js')
       .evaluate(function (keyword, negKeyword, posKeySel, negKeySel) {
@@ -311,8 +312,9 @@ console.log('after userAgent declared');
       cb(error)
     })
     } catch (e) {
+      console.log('inside try catch');
       console.log(e)
-      cb(e)
+      //cb(e)
     }
   })
 }
