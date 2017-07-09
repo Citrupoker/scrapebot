@@ -121,6 +121,8 @@ module.exports.reset = function (req, res) {
               redis.hdel(['blocked', dataset._id.toString()], function (err) {
                 if (err) { throw err }
               })
+            }).catch(function(e){
+              console.log(e)
             })
           }
           res.end()
