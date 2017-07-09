@@ -245,7 +245,6 @@ console.log('after userAgent declared');
       nightmare.inject('js', 'node_modules/jquery/dist/jquery.js')
       .inject('js', 'jquery.xpath.min.js')
       .evaluate(function (keyword, negKeyword, posKeySel, negKeySel) {
-        console.log('entered eval')
         var result = {}
         var keywordUrls = []
         var negKeywordArr = []
@@ -289,8 +288,6 @@ console.log('after userAgent declared');
 
         result.negKeywords = negKeywordArr
         
-        console.log('ended eval')
-
         return result
       }, params.keywords.toString().trim(), params.negKeywords.toString().trim(), '//text()[matches(., "' + params.keywords.toString().trim() + '", "i")]', '//text()[matches(., "' + params.negKeywords.toString().trim() + '", "i")]')
       .end()
