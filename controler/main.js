@@ -290,7 +290,6 @@ console.log('after userAgent declared');
 
         return result
       }, params.keywords.toString().trim(), params.negKeywords.toString().trim(), '//text()[matches(., "' + params.keywords.toString().trim() + '", "i")]', '//text()[matches(., "' + params.negKeywords.toString().trim() + '", "i")]')
-    .end()
     .then(function (result) {
       console.log('inside then');
       var dataset = {}
@@ -304,7 +303,7 @@ console.log('after userAgent declared');
       dataset.posHash = hashObject(result.posKeywords)
       dataset.hash = hashObject(result, 'md5')
       cb(null, dataset)
-    })
+    }).end()
     .catch(function (error) {
       console.log('inside catch');
       console.log(error)
