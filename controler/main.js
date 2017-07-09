@@ -287,6 +287,8 @@ console.log('after userAgent declared');
         result.posKeywords = posKeywordArr
 
         result.negKeywords = negKeywordArr
+        
+        console.log('ended eval')
 
         return result
       }, params.keywords.toString().trim(), params.negKeywords.toString().trim(), '//text()[matches(., "' + params.keywords.toString().trim() + '", "i")]', '//text()[matches(., "' + params.negKeywords.toString().trim() + '", "i")]')
