@@ -124,13 +124,11 @@ module.exports.reset = function (req, res) {
             })
           }
           res.end()
-        } else {
-          res.send('encountred an error please try again error')
         }
       })
     })
   } catch (e) {
-    console.log(e)
+    console.log('catch', e)
     res.send('encountred an error please try again')
   }
 }
