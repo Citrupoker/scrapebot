@@ -257,8 +257,10 @@ $(document).ready(function () {
     if (ids.length > 0) {
       if (permision) {
         $.post('/reset', {'ids': ids}, function (data, status) {
+          alert(status)
           if (data) {
             alert(data)
+            
           }
           linkdata('/getLinkData')
         })
