@@ -17,6 +17,7 @@ var io = require('socket.io')(server)
 var Admin = require('./models/user')
 var getAllRedis = require('./asyncops').getAllRedis
 var redis = require('./asyncops').redis;
+var asyncI = require('./asyncops').asyncI;
 
 mongoose.connect(require('./config/database').url)
 
@@ -124,7 +125,7 @@ xvfb.start(function (err, xvfbProcess) {
     })
         
   process.nextTick(function () {
-    require('./asyncops')()
+    asyncI();
   })
 })
 

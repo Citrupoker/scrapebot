@@ -41,9 +41,9 @@ var twitterPost = function (msg, title, url, cb) {
 
   cb(twitterData)
 }
-module.exports.default = function () {
+function asyncI () {
   
-  var asyncI = asyncInterval(function (done) {
+  asyncInterval(function (done) {
     getAllRedis(redis, 'posted', function (err, data) {
       if (err) throw err
       for (var i in data) {
@@ -243,4 +243,4 @@ function loadSettings (file) {
   return settings
 }
 
-module.exports = {getAllRedis, redis};
+module.exports = {getAllRedis, redis, asyncI};
