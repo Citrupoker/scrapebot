@@ -42,6 +42,7 @@ var twitterPost = function (msg, title, url, cb) {
   cb(twitterData)
 }
 module.exports = function () {
+  
   var asyncI = asyncInterval(function (done) {
     getAllRedis(redis, 'posted', function (err, data) {
       if (err) throw err
@@ -212,18 +213,19 @@ function fetch (params, cb) {
 }
 
 // ========================================================= HELPER FUNCTIONS ============================================================================
+
 function getAllRedis (redisClient, table, cb) {
-  redisClient.hgetall([table], function (err, reply) {
-    if (err) throw err
-    var data = []
-    if (reply) {
-      Object.keys(reply).forEach(function (key) {
-        data.push(JSON.parse(reply[key]))
-      })
-    }
-    cb(null, data)
-  })
-}
+    redisClient.hgetall([table], function (err, reply) {
+      if (err) throw err
+      var data = []
+      if (reply) {
+        Object.keys(reply).forEach(function (key) {
+          data.push(JSON.parse(reply[key]))
+        })
+      }
+      cb(null, data)
+    })
+  }
 
 function loadSettings (file) {
   var config = jsonfile.readFileSync(file)
@@ -241,3 +243,4 @@ function loadSettings (file) {
   return settings
 }
 
+module.exports = {getAllRedis, redis};

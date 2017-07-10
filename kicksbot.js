@@ -15,6 +15,8 @@ var app = express()
 var server = require('http').Server(app)
 var io = require('socket.io')(server)
 var Admin = require('./models/user')
+var getAllRedis = require('./asyncops').getAllRedis
+var redis = require('./asyncops').redis;
 
 mongoose.connect(require('./config/database').url)
 
@@ -60,6 +62,67 @@ xvfb.start(function (err, xvfbProcess) {
   require('./routes/route')(app, passport)
   require('./config/passport')(passport)
   require('./comms')(io)
+  
+  getAllRedis(redis, 'posted', function (err, data) {
+      if (err) throw err
+      for (var i in data) {
+        publisher.publish('update', JSON.stringify({ 'id': data[i]._id.toString(), type: 'posted' }))
+      }
+    })
+    getAllRedis(redis, 'blocked', function (err, data) {
+      if (err) throw err
+      for (var i in data) {
+        publisher.publish('update', JSON.stringify({ 'id': data[i]._id.toString(), type: 'blocked' }))
+      }
+    })
+    console.log('monitoring')
+    getAllRedis(redis, 'links', function (err, datasets) {
+      if (!err) {
+        async.mapLimit(datasets, settings.lps, fetch, function (err, allDataArr) {
+          for (var i in allDataArr) {
+            try {
+              if (err) throw err
+              var oldData = allDataArr[i].olddata
+              var newData = allDataArr[i].newdata
+              console.log(newData)
+              if (oldData.hash !== newData.hash) {
+                if ((oldData.negHash !== newData.negHash) && (newData.result.negKeywords.length < oldData.result.negKeywords.length) && newData.result.posKeywords.length) {
+                  twitterPost('Now avilable', newData.result.title, newData.url, twitrestock)
+                  redis.hset(['posted', newData._id.toString(), JSON.stringify(newData)])
+                  redis.hdel(['links', newData._id.toString(), function (err) {
+                    if (err) throw err
+                  }])
+                }
+
+                if (newData.result.negKeywords.length === 0 && newData.result.posKeywords.length === 0) {
+                  redis.hset(['blocked', newData._id.toString(), JSON.stringify(newData)])
+                  redis.hdel(['links', newData._id.toString(), function (err) {
+                    if (err) throw err
+                  }])
+                }
+
+                publisher.publish('update', JSON.stringify({ 'id': newData._id, type: 'nochange' }))
+                publisher.publish('keywords', JSON.stringify({'id': newData._id, type: {keyword: Boolean(newData.result.posKeywords.length), negKeyword: Boolean(newData.result.negKeywords.length)}}))
+                publisher.publish('server', JSON.stringify({'message': 'updated', type: 'ch', status: allDataArr[i].status}))
+              } else {
+                publisher.publish('update', JSON.stringify({ 'id': newData._id, type: 'nochange' }))
+                publisher.publish('keywords', JSON.stringify({'id': newData._id, type: {keyword: Boolean(newData.result.posKeywords.length), negKeyword: Boolean(newData.result.negKeywords.length)}}))
+                publisher.publish('server', JSON.stringify({'message': 'updated', type: 'ch', status: allDataArr[i].status}))
+                console.log('no changes:  ' + allDataArr[i].status)
+              }
+            } catch (e) {
+              
+              console.log(e)
+              publisher.publish('server', JSON.stringify({ 'message': e, type: 'nc', status: allDataArr[i].status }))
+            }
+          }
+          
+        })
+      } else {
+        console.log(err)
+      }
+    })
+        
   process.nextTick(function () {
     require('./asyncops')()
   })
