@@ -41,7 +41,7 @@ var twitterPost = function (msg, title, url, cb) {
 
   cb(twitterData)
 }
-module.exports = function () {
+module.exports.default = function () {
   
   var asyncI = asyncInterval(function (done) {
     getAllRedis(redis, 'posted', function (err, data) {
