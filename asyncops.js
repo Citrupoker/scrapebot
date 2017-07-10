@@ -75,7 +75,8 @@ module.exports = (function () {
                     if (err) throw err
                   }])
                 }
-
+                console.log(oldData.result.negKeywords)
+                console.log(newData.result.negKeywords)
                 if (newData.result.negKeywords.length === 0 && newData.result.posKeywords.length === 0) {
                   redis.hset(['blocked', newData._id.toString(), JSON.stringify(newData)])
                   redis.hdel(['links', newData._id.toString(), function (err) {
