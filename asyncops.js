@@ -106,7 +106,7 @@ function asyncI () {
     })
   }, settings.interval * 1000, settings.timeout * 1000)
 
-  asyncI.onTimeout(function () {
+  onTimeout(function () {
     childProcess.exec('killall -9 electron')
     childProcess.exec('killall -9 electron')
   })
