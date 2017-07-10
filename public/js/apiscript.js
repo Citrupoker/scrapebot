@@ -26,7 +26,7 @@ $(document).ready(function () {
     var negKeywordSelector = '[data-row-id=' + data.id + '] .negKeyword-span'
     if (data.type.keyword) {
       $(keywordSelector).text('found')
-      $(keywordSelector).removeClass('label-warning')
+      $(keywordSelector).removeClass('label-danger')
       $(keywordSelector).addClass('label-success')
     } else {
       $(keywordSelector).text('not found')
@@ -34,7 +34,7 @@ $(document).ready(function () {
 
     if (data.type.negKeyword) {
       $(negKeywordSelector).text('found')
-      $(negKeywordSelector).removeClass('label-warning')
+      $(negKeywordSelector).removeClass('label-danger')
       $(negKeywordSelector).addClass('label-success')
     } else {
       $(negKeywordSelector).text('not found')
@@ -173,8 +173,8 @@ $(document).ready(function () {
 
       $(jsonData).each(function (index, value) {
         var tablerow = $('<tr data-row-id=""> </tr>').attr('data-row-id', value._id)
-        var keywords = $('<td> </td>').html(value.keywords + ' <span class="label label-warning keyword-span">Not found</span>')
-        var monitor = $('<td> </td>').html(value.negKeywords + ' <span class="label label-warning negKeyword-span">Not found</span>')
+        var keywords = $('<td> </td>').html(value.keywords + ' <span class="label label-danger keyword-span">Not found</span>')
+        var monitor = $('<td> </td>').html(value.negKeywords + ' <span class="label label-danger negKeyword-span">Not found</span>')
         var url = $('<a href="#" target="_blank"></a>').attr('href', value.url)
         url.text(value.url)
         var urlTableData = $('<td> </td>').append(url)
