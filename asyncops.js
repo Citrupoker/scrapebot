@@ -41,7 +41,7 @@ var twitterPost = function (msg, title, url, cb) {
 
   cb(twitterData)
 }
-function asyncI () {
+module.exports = (function () {
   
   var asyncI = asyncInterval(function (done) {
     getAllRedis(redis, 'posted', function (err, data) {
@@ -52,6 +52,7 @@ function asyncI () {
     })
     getAllRedis(redis, 'blocked', function (err, data) {
       if (err) throw err
+      
       for (var i in data) {
         publisher.publish('update', JSON.stringify({ 'id': data[i]._id.toString(), type: 'blocked' }))
       }
@@ -110,7 +111,7 @@ function asyncI () {
     childProcess.exec('killall -9 electron')
     childProcess.exec('killall -9 electron')
   })
-}
+})
 
 function fetch (params, cb) {
   process.nextTick(function () {
@@ -242,5 +243,3 @@ function loadSettings (file) {
   settings.fetch = config.fetch
   return settings
 }
-
-module.exports = {getAllRedis, redis, asyncI, fetch};
