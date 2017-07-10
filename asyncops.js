@@ -43,7 +43,7 @@ var twitterPost = function (msg, title, url, cb) {
 }
 function asyncI () {
   
-  asyncInterval(function (done) {
+  var asyncI = asyncInterval(function (done) {
     getAllRedis(redis, 'posted', function (err, data) {
       if (err) throw err
       for (var i in data) {
@@ -106,7 +106,7 @@ function asyncI () {
     })
   }, settings.interval * 1000, settings.timeout * 1000)
 
-  onTimeout(function () {
+  asyncI.onTimeout(function () {
     childProcess.exec('killall -9 electron')
     childProcess.exec('killall -9 electron')
   })
