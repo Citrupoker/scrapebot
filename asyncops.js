@@ -243,4 +243,4 @@ function loadSettings (file) {
   return settings
 }
 
-module.exports = {getAllRedis, redis, asyncI};
+module.exports = {getAllRedis, redis, asyncI, fetch};
