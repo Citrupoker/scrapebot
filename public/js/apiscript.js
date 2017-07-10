@@ -75,6 +75,7 @@ $(document).ready(function () {
     }
   })
   loadSettings()
+  linkdata('/getLinkData')
   function loadSettings () {
     $.get('/getconfig', function (data) {
       data = JSON.parse(data)
