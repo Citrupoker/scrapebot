@@ -41,7 +41,52 @@ var twitterPost = function (msg, title, url, cb) {
 
   cb(twitterData)
 }
+getAllRedis(redis, 'links', function (err, datasets) {
+      if (!err) {
+        async.mapLimit(datasets, settings.lps, fetch, function (err, allDataArr) {
+          for (var i in allDataArr) {
+            try {
+              if (err) throw err
+              var oldData = allDataArr[i].olddata
+              var newData = allDataArr[i].newdata
+              console.log(newData)
+              if (oldData.hash !== newData.hash) {
+                if ((oldData.negHash !== newData.negHash) && (newData.result.negKeywords.length < oldData.result.negKeywords.length) && newData.result.posKeywords.length) {
+                  twitterPost('Now avilable', newData.result.title, newData.url, twitrestock)
+                  redis.hset(['posted', newData._id.toString(), JSON.stringify(newData)])
+                  redis.hdel(['links', newData._id.toString(), function (err) {
+                    if (err) throw err
+                  }])
+                }
 
+                if (newData.result.negKeywords.length === 0 && newData.result.posKeywords.length === 0) {
+                  redis.hset(['blocked', newData._id.toString(), JSON.stringify(newData)])
+                  redis.hdel(['links', newData._id.toString(), function (err) {
+                    if (err) throw err
+                  }])
+                }
+
+                publisher.publish('update', JSON.stringify({ 'id': newData._id, type: 'nochange' }))
+                publisher.publish('keywords', JSON.stringify({'id': newData._id, type: {keyword: Boolean(newData.result.posKeywords.length), negKeyword: Boolean(newData.result.negKeywords.length)}}))
+                publisher.publish('server', JSON.stringify({'message': 'updated', type: 'ch', status: allDataArr[i].status}))
+              } else {
+                publisher.publish('update', JSON.stringify({ 'id': newData._id, type: 'nochange' }))
+                publisher.publish('keywords', JSON.stringify({'id': newData._id, type: {keyword: Boolean(newData.result.posKeywords.length), negKeyword: Boolean(newData.result.negKeywords.length)}}))
+                publisher.publish('server', JSON.stringify({'message': 'updated', type: 'ch', status: allDataArr[i].status}))
+                console.log('no changes:  ' + allDataArr[i].status)
+              }
+            } catch (e) {
+          
+              console.log(e)
+              publisher.publish('server', JSON.stringify({ 'message': e, type: 'nc', status: allDataArr[i].status }))
+            }
+          }
+      
+        })
+      } else {
+        console.log(err)
+      }
+    })
 module.exports = function () {
   var asyncI = asyncInterval(function (done) {
     getAllRedis(redis, 'posted', function (err, data) {
