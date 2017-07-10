@@ -26,12 +26,16 @@ $(document).ready(function () {
     var negKeywordSelector = '[data-row-id=' + data.id + '] .negKeyword-span'
     if (data.type.keyword) {
       $(keywordSelector).text('found')
+      $(keywordSelector).removeClass('label-default')
+      $(keywordSelector).addClass('label-success')
     } else {
       $(keywordSelector).text('not found')
     }
 
     if (data.type.negKeyword) {
       $(negKeywordSelector).text('found')
+      $(negKeywordSelector).removeClass('label-default')
+      $(negKeywordSelector).addClass('label-success')
     } else {
       $(negKeywordSelector).text('not found')
     }
