@@ -18,6 +18,7 @@ var Admin = require('./models/user')
 var getAllRedis = require('./asyncops').getAllRedis
 var redis = require('./asyncops').redis;
 var asyncI = require('./asyncops').asyncI;
+var async = require('async')
 
 mongoose.connect(require('./config/database').url)
 
