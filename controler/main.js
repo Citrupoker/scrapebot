@@ -5,7 +5,7 @@ var hashObject = require('hash-object')
 var Nightmare = require('nightmare')
 var fetchSettings = {}
 var redis = redisLib.createClient()
-var jsonconf = '/root/kicks/conf.json'
+var jsonconf = '/root/scrapebot/conf.json'
 fetchSettings = loadSettings(jsonconf)
 jsonfile.spaces = 4
 
@@ -303,7 +303,6 @@ function fetchMain (params, cb) {
       dataset.url = params.url
       dataset.keywords = params.keywords
       dataset.negKeywords = params.negKeywords
-      console.log('inside then', params.negKeywords);
       dataset.result = result
       dataset.urlHash = hashObject(result.keywordUrls)
       dataset.negHash = hashObject(result.negKeywords)
