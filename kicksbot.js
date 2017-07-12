@@ -1,3 +1,4 @@
+require('dotenv').config()
 var Admin = require('./models/user')
 var express = require('express')
 var path = require('path')
@@ -16,15 +17,16 @@ var app = express()
 var io = require('socket.io')(app)
 xvfb.startSync()
 
+// add all values in the .env file
 
-mongoose.connect(require('./config/database').url)
+mongoose.connect(process.env.MONGO_URL)
 
-Admin.findOne({email: 'admin@monitor.kicks'}, function (err, admin) {
+Admin.findOne({email: process.env.ADMIN_EMAIL}, function (err, admin) {
   if (err) throw err
   if (!admin) {
     var newAdmin = new Admin()
-    newAdmin.email = 'admin@monitor.kicks'
-    newAdmin.password = newAdmin.generateHash('k1ck3monitor')
+    newAdmin.email = process.env.ADMIN_EMAIL
+    newAdmin.password = newAdmin.generateHash(process.env.ADMIN_PASS)
     newAdmin.verified = true
     newAdmin.isAdmin = true
     newAdmin.save(function (err) {
@@ -44,9 +46,9 @@ app.use(cookieParser()) // read cookies (needed for auth)
 app.use(bodyParser()) // get information from html forms
 app.use(bodyParser.json()) // get JSON data
 app.use(session({
-  secret: 'ilovescotchscotchyscotchscotch',
-    // create new redis store.
-  store: new Redisstore({host: 'localhost', port: 6379, client: client, ttl: 760}),
+  //add .env file
+  secret: process.env.SESSION_TOKEN,
+  store: new Redisstore({host: process.env.REDIS_HOST, port: process.env.REDIS_PORT, client: client, ttl: process.env.REDIS_TTL}),
   saveUninitialized: false,
   resave: false
 }))
@@ -63,6 +65,6 @@ process.nextTick(function () {
    require('./asyncops')()
 })
 
-server.listen(8080, '0.0.0.0', function () {
-  console.log('Listening on 80')
+server.listen(process.env.PORT, process.env.ADDR, function () {
+  console.log('Listening on ' + process.env.PORT)
 })
