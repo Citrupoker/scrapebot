@@ -1,4 +1,5 @@
 require('dotenv').config()
+var appDebug = require('debug')('kicksbot:main')
 var Admin = require('./models/user')
 var express = require('express')
 var path = require('path')
@@ -66,5 +67,5 @@ process.nextTick(function () {
 })
 
 server.listen(process.env.PORT, process.env.ADDR, function () {
-  console.log('Listening on ' + process.env.PORT)
+  appDebug('Listening on ' + process.env.PORT)
 })
