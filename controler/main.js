@@ -6,6 +6,7 @@ var Nightmare = require('nightmare')
 var fetchSettings = {}
 var redis = redisLib.createClient()
 var jsonconf = '/root/scrapebot/conf.json'
+var appDebug = require('debug')('kicksbot:main')
 fetchSettings = loadSettings(jsonconf)
 jsonfile.spaces = 4
 
@@ -113,7 +114,7 @@ module.exports.reset = function (req, res) {
           for (var x in data) {
             fetchMain(data[x], function (err, dataset) {
               if (err) console.log('encountred an error please try again error')
-              console.log(dataset)
+              appDebug('dataset line 116', dataset)
               redis.hset(['links', dataset._id.toString(), JSON.stringify(dataset)])
               redis.hdel(['posted', dataset._id.toString()], function (err) {
                 if (err) { throw err }
@@ -243,9 +244,7 @@ function fetchMain (params, cb) {
       }
 
       nightmare.useragent(useragents[Math.floor((Math.random() * useragents.length))]).goto(params.url).wait()
-      nightmare.on('console', (log, msg) => {
-        console.log(msg)
-    })
+      
       nightmare.inject('js', 'node_modules/jquery/dist/jquery.js')
       .inject('js', 'jquery.xpath.min.js')
       .evaluate(function (keyword, negKeyword, posKeySel, negKeySel) {
