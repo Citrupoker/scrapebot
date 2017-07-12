@@ -17,6 +17,7 @@ var xvfb = new Xvfb({reuse: true})
 var app = express()
 var server = require('https').Server(app);
 var io = require('socket.io')(server)
+xvfb.startSync()
 
 // add all values in the .env file
 
@@ -58,18 +59,13 @@ app.use(passport.initialize())
 app.use(passport.session()) // persistent login sessions
 app.use(flash()) // use connect-flash for flash messages stored in session
 
-xvfb.start(function (err, xvfbProcess) {
-  // code that uses the virtual frame buffer here
-  if (err) throw err
-  require('./routes/route')(app, passport)
-  require('./config/passport')(passport)
-  require('./comms')(io)
-  
-  process.nextTick(function () {
-   require('./asyncops')()
-  })
-})
+require('./routes/route')(app, passport)
+require('./config/passport')(passport)
+require('./comms')(io)
         
+process.nextTick(function () {
+   require('./asyncops')()
+})
 
 server.listen(process.env.PORT, process.env.ADDR, function () {
   appDebug('Listening on ' + process.env.PORT)
