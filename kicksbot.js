@@ -1,3 +1,4 @@
+var Admin = require('./models/user')
 var express = require('express')
 var path = require('path')
 var mongoose = require('mongoose')
@@ -10,11 +11,11 @@ var redis = require('redis')
 var Redisstore = require('connect-redis')(session)
 var client = redis.createClient()
 var Xvfb = require('xvfb')
-var xvfb = new Xvfb()
+var xvfb = new Xvfb({reuse: true})
 var app = express()
-var server = require('http').Server(app)
-var io = require('socket.io')(server)
-var Admin = require('./models/user')
+var io = require('socket.io')(app)
+xvfb.startSync()
+
 
 mongoose.connect(require('./config/database').url)
 
@@ -54,16 +55,12 @@ app.use(passport.initialize())
 app.use(passport.session()) // persistent login sessions
 app.use(flash()) // use connect-flash for flash messages stored in session
 
-xvfb.start(function (err, xvfbProcess) {
-  // code that uses the virtual frame buffer here
-  if (err) throw err
-  require('./routes/route')(app, passport)
-  require('./config/passport')(passport)
-  require('./comms')(io)
+require('./routes/route')(app, passport)
+require('./config/passport')(passport)
+require('./comms')(io)
         
-  process.nextTick(function () {
-    require('./asyncops')()
-  })
+process.nextTick(function () {
+   require('./asyncops')()
 })
 
 server.listen(8080, '0.0.0.0', function () {
