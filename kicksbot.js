@@ -15,7 +15,8 @@ var client = redis.createClient()
 var Xvfb = require('xvfb')
 var xvfb = new Xvfb({reuse: true})
 var app = express()
-var io = require('socket.io')(app)
+var server = require('https').Server(app);
+var io = require('socket.io')(server)
 xvfb.startSync()
 
 // add all values in the .env file
