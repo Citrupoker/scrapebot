@@ -243,9 +243,7 @@ function fetchMain (params, cb) {
       }
 
       nightmare.useragent(useragents[Math.floor((Math.random() * useragents.length))]).goto(params.url).wait()
-      nightmare.on('console', (log, msg) => {
-        console.log(msg)
-    })
+      
       nightmare.inject('js', 'node_modules/jquery/dist/jquery.js')
       .inject('js', 'jquery.xpath.min.js')
       .evaluate(function (keyword, negKeyword, posKeySel, negKeySel) {
@@ -273,7 +271,7 @@ function fetchMain (params, cb) {
             negKeywordArr.push(str.trim())
           }
         })
-        console.log("nkArray", negKeywordArr)
+      
         $(document).xpath(posKeySel).each(function () {
           var element = $(this)
           var str = element.text()
