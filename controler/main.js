@@ -274,10 +274,7 @@ function fetchMain (params, cb) {
           }
           
         })
-      function test(){
-          console.log("nkArray", negKeywordArr)
-        }
-        test()
+      
         $(document).xpath(posKeySel).each(function () {
           var element = $(this)
           var str = element.text()
@@ -300,12 +297,13 @@ function fetchMain (params, cb) {
       }, params.keywords.toString().trim(), params.negKeywords.toString().trim(), '//text()[matches(., "' + params.keywords.toString().trim() + '", "i")]', '//text()[matches(., "' + params.negKeywords.toString().trim() + '", "i")]')
       .end()
     .then(function (result) {
-      console.log('inside then');
+      
       var dataset = {}
       dataset._id = params._id
       dataset.url = params.url
       dataset.keywords = params.keywords
       dataset.negKeywords = params.negKeywords
+      console.log('inside then', params.negKeywords);
       dataset.result = result
       dataset.urlHash = hashObject(result.keywordUrls)
       dataset.negHash = hashObject(result.negKeywords)
